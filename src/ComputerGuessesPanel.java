@@ -21,9 +21,7 @@ public class ComputerGuessesPanel extends JPanel {
     private int lowerBound; // correct number is >= lowerBound
 
     public ComputerGuessesPanel(JPanel cardsPanel, Consumer<GameResult> gameFinishedCallback){
-        numGuesses = 0;
-        upperBound = 1000;
-        lowerBound = 1;
+        reset();
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -80,14 +78,17 @@ public class ComputerGuessesPanel extends JPanel {
 
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent e) {
-                numGuesses = 0;
-                upperBound = 1000;
-                lowerBound = 1;
+                reset();
 
                 lastGuess = (lowerBound + upperBound + 1) / 2;
                 guessMessage.setText("I guess " + lastGuess + ".");
             }
         });
     }
-
+    // doesn't need testing, it's just a setter
+    public void reset(){
+        numGuesses = 0;
+        upperBound = 1000;
+        lowerBound = 1;
+    }
 }
