@@ -71,19 +71,17 @@ public class GameOverPanel extends JPanel {
     // TODO: refactor this method
     public void setGameResults(GameResult result){
         this.gameResult = result;
-
+        //TODO: move the 2 below into an updateCard method?
+        // I personally think this counts as a trivial amount of work
+        // -Tommy
         answerTxt.setText("The answer was " + result.correctValue + ".");
-        if(result.numGuesses == 1){
-            numGuessesTxt.setText((result.humanWasPlaying ? "You" : "I") + " guessed it on the first try!");
-        }
-        else {
-            numGuessesTxt.setText("It took " + (result.humanWasPlaying ? "you" : "me") + " " + result.numGuesses + " guesses.");
-        }
+        //condensed multiple lines into 1, and now the complex parts are testable separately as generateGuessText
+        numGuessesTxt.setText(generateGuessText(result.numGuesses, result.humanWasPlaying));
 
         if(result.humanWasPlaying){
             // write stats to file
             try(CSVWriter writer = new CSVWriter(new FileWriter(StatsFile.FILENAME, true))) {
-
+                //TODO: we need a way to get the record out of here
                 String [] record = new String[2];
                 record[0] = LocalDateTime.now().toString();
                 record[1] = Integer.toString(result.numGuesses);
@@ -93,6 +91,14 @@ public class GameOverPanel extends JPanel {
                 // NOTE: In a full implementation, we would log this error and possibly alert the user
                 // NOTE: For this project, you do not need unit tests for handling this exception.
             }
+        }
+    }
+    private static String generateGuessText(int numGuesses, boolean humanPlayer){
+        if(numGuesses == 1){
+            return (humanPlayer ? "You" : "I") + " guessed it on the first try!";
+        }
+        else {
+            return "It took " + (humanPlayer ? "you" : "me") + " " + numGuesses + " guesses.";
         }
     }
 }

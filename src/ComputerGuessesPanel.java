@@ -85,8 +85,8 @@ public class ComputerGuessesPanel extends JPanel {
             }
         });
     }
-    // doesn't need testing, it's just a setter
-    public void reset(){
+    // doesn't need testing, it's just a setter, but it removes duplicate code
+    private void reset(){
         numGuesses = 0;
         upperBound = 1000;
         lowerBound = 1;
