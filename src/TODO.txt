@@ -1,2 +1,0 @@
-write test for StatsFile's static writeRecord(int numGuesses, String time, CSVWriter writer)
-also move GameOverPanel's static generateGuessText(int guesses, boolean humanPlayer) elsewhere
