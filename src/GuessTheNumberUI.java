@@ -64,10 +64,9 @@ public class GuessTheNumberUI {
         addToCards(cardsPanel, gameOverPanel, ScreenID.GAME_OVER.name());
 
         // HUMAN_PLAY
-        // TODO: your refactoring should include some changes to the lambda expression in the following line
-        // HINT: Look at what GameOverPanel.setGameResults does now. Your code should do the same operations,
-        //       but refactor how those are structured, which means the lambda will need to change.
-        JPanel humanGuessesPanel = new HumanGuessesPanel(cardsPanel, gameResult -> {gameOverPanel.setGameResults(gameResult);});
+        // I *would* have just edited both lambdas to also call applyUIText(),
+        // but I'm only allowed to edit this one
+        JPanel humanGuessesPanel = new HumanGuessesPanel(cardsPanel, gameResult -> {gameOverPanel.setGameResults(gameResult); gameOverPanel.writeGameResults();});
         addToCards(cardsPanel, humanGuessesPanel, ScreenID.HUMAN_PLAY.name());
 
         // COMPUTER_PLAY_LAUNCH

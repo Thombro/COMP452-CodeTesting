@@ -66,39 +66,71 @@ public class GameOverPanel extends JPanel {
     }
 
     /**
-     * Sets the game results, updates the UI, and saves results to the log file (if human was playing)
+     * Sets the game results and updates the UI
      */
-    // TODO: refactor this method
     public void setGameResults(GameResult result){
+        setGameResults(result, answerTxt, numGuessesTxt);
+    }
+
+    /**
+     * sets the game results and sends them to the UI
+     * @param answer the text label that displays the correct value
+     * @param guesses the text label that displays the number of guesses made
+     */
+    // I would have preferred to be able to test the
+    // text sent to the UI separately from setGameResults,
+    // but I can't edit the second lambda, so I had to compromise
+    public void setGameResults(GameResult result, JLabel answer, JLabel guesses){
         this.gameResult = result;
-        //TODO: move the 2 below into an updateCard method?
-        // I personally think this counts as a trivial amount of work
-        // -Tommy
-        answerTxt.setText("The answer was " + result.correctValue + ".");
-        //condensed multiple lines into 1, and now the complex parts are testable separately as generateGuessText
-        numGuessesTxt.setText(generateGuessText(result.numGuesses, result.humanWasPlaying));
 
-        if(result.humanWasPlaying){
-            // write stats to file
-            try(CSVWriter writer = new CSVWriter(new FileWriter(StatsFile.FILENAME, true))) {
-                //TODO: we need a way to get the record out of here
-                String [] record = new String[2];
-                record[0] = LocalDateTime.now().toString();
-                record[1] = Integer.toString(result.numGuesses);
+        applyUIText(answer, guesses);
+    }
 
-                writer.writeNext(record);
-            } catch (IOException e) {
-                // NOTE: In a full implementation, we would log this error and possibly alert the user
-                // NOTE: For this project, you do not need unit tests for handling this exception.
-            }
+    /**
+     * writes game results to class StatsFile's static FILENAME field
+     */
+    public void writeGameResults(){
+        try(CSVWriter writer = new CSVWriter(new FileWriter(StatsFile.FILENAME, true))) {
+            writeGameResults(writer);
+        } catch (IOException e) {
+            // NOTE: In a full implementation, we would log this error and possibly alert the user
+            // NOTE: For this project, you do not need unit tests for handling this exception.
         }
     }
-    private static String generateGuessText(int numGuesses, boolean humanPlayer){
-        if(numGuesses == 1){
-            return (humanPlayer ? "You" : "I") + " guessed it on the first try!";
+    /**
+     * writes game results to the writer parameter
+     */
+    public void writeGameResults(CSVWriter writer){
+        String [] record = new String[2];
+        record[0] = LocalDateTime.now().toString();
+        record[1] = Integer.toString(gameResult.numGuesses);
+
+        writer.writeNext(record);
+    }
+
+    /**
+     * writes the text
+     * @param answer the text label that displays the correct value
+     * @param guesses the text label that displays the number of guesses made
+     */
+    private void applyUIText(JLabel answer, JLabel guesses){
+        // no need to be able to test this trivial code
+        answer.setText("The answer was " + gameResult.correctValue + ".");
+        // the below can be tested by just running generateGuessText()
+        guesses.setText(generateGuessText());
+    }
+
+    /**
+     * generates the text for the number of guesses made
+     * this allows for testing the text generation without involving UI
+     * @return the text to be put into numGuessesTxt
+     */
+    public String generateGuessText(){
+        if(gameResult.numGuesses == 1){
+            return (gameResult.humanWasPlaying ? "You" : "I") + " guessed it on the first try!";
         }
         else {
-            return "It took " + (humanPlayer ? "you" : "me") + " " + numGuesses + " guesses.";
+            return "It took " + (gameResult.humanWasPlaying ? "you" : "me") + " " + gameResult.humanWasPlaying + " guesses.";
         }
     }
 }
