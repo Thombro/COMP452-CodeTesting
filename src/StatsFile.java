@@ -1,7 +1,9 @@
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -63,5 +65,28 @@ public class StatsFile extends GameStats {
     @Override
     public int maxNumGuesses(){
         return (statsMap.isEmpty() ? 0 : statsMap.lastKey());
+    }
+
+    /*
+    ==========================================
+    THE BELOW ARE RELOCATED FROM GameOverPanel
+    ==========================================
+     */
+
+    public static void writeRecord(int numGuesses){
+        try(CSVWriter writer = new CSVWriter(new FileWriter(StatsFile.FILENAME, true))) {
+            writeRecord(numGuesses, LocalDateTime.now().toString(), writer);
+        } catch (IOException e) {
+            // NOTE: In a full implementation, we would log this error and possibly alert the user
+            // NOTE: For this project, you do not need unit tests for handling this exception.
+        }
+    }
+
+    public static void writeRecord(int numGuesses, String time, CSVWriter writer){
+        String [] record = new String[2];
+        record[0] = time;
+        record[1] = Integer.toString(numGuesses);
+
+        writer.writeNext(record);
     }
 }

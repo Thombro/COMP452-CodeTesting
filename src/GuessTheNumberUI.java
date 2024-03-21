@@ -64,9 +64,7 @@ public class GuessTheNumberUI {
         addToCards(cardsPanel, gameOverPanel, ScreenID.GAME_OVER.name());
 
         // HUMAN_PLAY
-        // I *would* have just edited both lambdas to also call applyUIText(),
-        // but I'm only allowed to edit this one
-        JPanel humanGuessesPanel = new HumanGuessesPanel(cardsPanel, gameResult -> {gameOverPanel.setGameResults(gameResult); gameOverPanel.writeGameResults();});
+        JPanel humanGuessesPanel = new HumanGuessesPanel(cardsPanel, gameResult -> {gameOverPanel.setGameResults(gameResult); StatsFile.writeRecord(gameResult.numGuesses);});
         addToCards(cardsPanel, humanGuessesPanel, ScreenID.HUMAN_PLAY.name());
 
         // COMPUTER_PLAY_LAUNCH
