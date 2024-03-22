@@ -25,6 +25,7 @@ public class GuessAI {
 
     /**
      * used both to get the initial guess, and to get the correct guess when successful
+     * the reason I'm using it to get the inital guess is to preserve the off by 1 for number of guesses
      * @return the last guess made
      */
     public int getLastGuess() {

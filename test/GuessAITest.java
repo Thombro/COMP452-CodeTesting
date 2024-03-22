@@ -64,4 +64,12 @@ class GuessAITest {
             }
         }
     }
+
+    @Test
+    void reset() {
+        GuessAI ai = new GuessAI();
+        ai.nextGuess(true);//sets the last guess to something else
+        ai.reset();
+        assertEquals(501, ai.getLastGuess());
+    }
 }
