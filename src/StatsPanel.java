@@ -90,31 +90,17 @@ public class StatsPanel extends JPanel {
         }
     }
 
+    // refactored this method by moving logic into StatsFile methods
     private void updateResultsPanel(){
         clearResults();
 
-        GameStats stats = new StatsFile();
+        StatsFile stats = new StatsFile();
+
+        int[] results = stats.getResults(BIN_EDGES.clone());
 
         for(int binIndex=0; binIndex<BIN_EDGES.length; binIndex++){
-            final int lowerBound = BIN_EDGES[binIndex];
-            int numGames = 0;
-
-            if(binIndex == BIN_EDGES.length-1){
-                // last bin
-                // Sum all the results from lowerBound on up
-                for(int numGuesses=lowerBound; numGuesses<stats.maxNumGuesses(); numGuesses++){
-                    numGames += stats.numGames(numGuesses);
-                }
-            }
-            else{
-                int upperBound = BIN_EDGES[binIndex+1];
-                for(int numGuesses=lowerBound; numGuesses <= upperBound; numGuesses++) {
-                    numGames += stats.numGames(numGuesses);
-                }
-            }
-
             JLabel resultLabel = resultsLabels.get(binIndex);
-            resultLabel.setText(Integer.toString(numGames));
+            resultLabel.setText(Integer.toString(results[binIndex]));
         }
     }
 }

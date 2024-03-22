@@ -2,6 +2,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
+import javax.swing.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -88,5 +89,32 @@ public class StatsFile extends GameStats {
         record[1] = Integer.toString(numGuesses);
 
         writer.writeNext(record);
+    }
+
+    /*
+    ==========================================
+    THE BELOW ARE RELOCATED FROM StatsPanel
+    ==========================================
+     */
+
+    public int[] getResults(int[] binsEdges) {
+        int[] results = new int[binsEdges.length];
+
+        for(int binIndex=0; binIndex<binsEdges.length; binIndex++){
+            final int lowerBound = binsEdges[binIndex];
+
+            results[binIndex] = binIndex == binsEdges.length-1 ? getBinSum(lowerBound, maxNumGuesses()-1) : getBinSum(lowerBound, binsEdges[binIndex+1]);
+        }
+
+        return results;
+    }
+
+    //this method returns that number of games with guess between a lower and upper bound
+    private int getBinSum(int lowerBound, int upperBound) {
+        int sum = 0;
+        for(int numGuesses = lowerBound; numGuesses <= upperBound; numGuesses++) {
+            sum += numGames(numGuesses);
+        }
+        return sum;
     }
 }
