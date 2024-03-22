@@ -2,12 +2,9 @@ I edited the StatsFile class, I added 2 static methods for the writing to CSV, b
 
 things to do by file
 ComputerGuessesPanel{
-    Refactor whole class
+    write test code for GuessAI, make sure to catch that it is off by 1 in number of guesses, and can't hit certain values
 }
-GameOverPanel{
-    move generateGuessText(int guesses, boolean humanPlayer) elsewhere then test it
-        moving elsewhere because we are told not to test GameOverPanel
-}
+GameOverPanel: DONE
 GameResult/GameStats: CAN edit
 GuessResult: CAN'T edit
 GuessTheNumberUI: DONE

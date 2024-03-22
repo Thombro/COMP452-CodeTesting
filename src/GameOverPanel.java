@@ -83,7 +83,8 @@ public class GameOverPanel extends JPanel {
 
     /**
      * generates the text for the number of guesses made
-     * this allows for testing the text generation without involving UI
+     * this allows for testing the text generation without involving UI,
+     * but I don't think we need to test this, it's pretty simple at the moment
      * @return the text to be put into numGuessesTxt
      */
     public static String generateGuessText(int guesses, boolean humanPlayer){
