@@ -65,6 +65,8 @@ public class GameOverPanel extends JPanel {
 
     /**
      * Sets the game results and updates the UI
+     * -I would have removed the UI step, but I wasn't allowed to edit the second
+     *  lambda that accesses this, and I want the second call to properly show UI
      */
     public void setGameResults(GameResult result){
         this.gameResult = result;

@@ -19,11 +19,14 @@ public class GuessAI {
         lowerBound = 1;
         lastGuess = (lowerBound + upperBound + 1) / 2;
     }
-
     public int getNumGuesses() {
         return numGuesses;
     }
 
+    /**
+     * used both to get the initial guess, and to get the correct guess when successful
+     * @return the last guess made
+     */
     public int getLastGuess() {
         return lastGuess;
     }
