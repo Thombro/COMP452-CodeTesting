@@ -18,6 +18,7 @@ class StatsFileTest {
 
     @Test
     void loadStatsFromFile_ValidInput_Success() {
+        //using dependency injection
         String csvData = "2024-03-20T10:15:30,3\n" +
                 "2024-03-21T09:20:45,4\n" +
                 "2024-02-28T15:30:00,5";
@@ -38,6 +39,7 @@ class StatsFileTest {
 
     @Test
     void loadStatsFromFile_NumberFormatExceptionThrown_ExceptionHandled() {
+        //using dependency injection
         String csvData = "2024-03-20T10:15:30,3\n" +
                 "2024-03-21T09:20:45,invalid_number\n" +
                 "2024-02-28T15:30:00,5";
@@ -56,6 +58,7 @@ class StatsFileTest {
 
     @Test
     void loadStatsFromFile_DateTimeParseExceptionThrown_ExceptionHandled() {
+        //using dependency injection
         String csvData = "2024-03-20T10:15:30,3\n" +
                 "invalid_timestamp,4\n" +
                 "2024-02-28T15:30:00,5";
