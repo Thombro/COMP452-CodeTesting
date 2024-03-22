@@ -3,6 +3,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class StatsFile extends GameStats {
     // the past 30 days where the person took that many guesses
     private SortedMap<Integer, Integer> statsMap;
 
-    public StatsFile(){
+/*    public StatsFile(){
         statsMap = new TreeMap<>();
         LocalDateTime limit = LocalDateTime.now().minusDays(30);
 
@@ -55,6 +56,70 @@ public class StatsFile extends GameStats {
         } catch (IOException e) {
             // NOTE: In a full implementation, we would log this error and alert the user
             // NOTE: For this project, you do not need unit tests for handling this exception.
+        }
+    }*/
+
+    public StatsFile() {
+        this(new TreeMap<>());
+    }
+
+    StatsFile(SortedMap<Integer, Integer> statsMap) {
+        this.statsMap = statsMap;
+        loadStatsFromFile();
+    }
+
+    private void loadStatsFromFile() {
+        LocalDateTime limit = LocalDateTime.now().minusDays(30);
+
+        try (CSVReader csvReader = new CSVReader(new FileReader(FILENAME))) {
+            String[] values;
+            while ((values = csvReader.readNext()) != null) {
+                try {
+                    LocalDateTime timestamp = parseTimestamp(values[0]);
+                    int numGuesses = Integer.parseInt(values[1]);
+
+                    if (timestamp != null && timestamp.isAfter(limit)) {
+                        statsMap.put(numGuesses, 1 + statsMap.getOrDefault(numGuesses, 0));
+                    }
+                } catch(NumberFormatException nfe){
+                    // NOTE: In a full implementation, we would log this error and possibly alert the user
+                    throw nfe;
+                }
+                catch(DateTimeParseException dtpe){
+                    // NOTE: In a full implementation, we would log this error and possibly alert the user
+                    throw dtpe;
+                }
+            }
+        } catch (CsvValidationException e) {
+            // NOTE: In a full implementation, we would log this error and alert the user
+            // NOTE: For this project, you do not need unit tests for handling this exception.
+        } catch (IOException e) {
+            // NOTE: In a full implementation, we would log this error and alert the user
+            // NOTE: For this project, you do not need unit tests for handling this exception.
+        }
+    }
+
+    LocalDateTime parseTimestamp(String timestampStr) {
+        try {
+            return LocalDateTime.parse(timestampStr);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
+    public void loadStatsFromFile(CSVReader csvReader) throws IOException, CsvValidationException {
+        String[] values;
+        while ((values = csvReader.readNext()) != null) {
+            try {
+                LocalDateTime timestamp = parseTimestamp(values[0]);
+                int numGuesses = Integer.parseInt(values[1]);
+
+                if (timestamp != null && timestamp.isAfter(LocalDateTime.now().minusDays(30))) {
+                    statsMap.put(numGuesses, 1 + statsMap.getOrDefault(numGuesses, 0));
+                }
+            } catch(NumberFormatException | DateTimeParseException e) {
+                throw e;
+            }
         }
     }
 
